@@ -25,3 +25,4 @@ const productsApi = createApi({
 });
 
 export const { useFetchAllProductsQuery } = productsApi;
+export default productsApi;
