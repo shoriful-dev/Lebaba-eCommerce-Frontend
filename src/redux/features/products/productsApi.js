@@ -20,6 +20,9 @@ const productsApi = createApi({
         })
         return `/?${queryParams}`
       }
+    }),
+    fetchProductById: builder.query({
+      
     })
   })
 });
