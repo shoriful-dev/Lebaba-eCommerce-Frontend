@@ -7,51 +7,64 @@ const productsApi = createApi({
     baseUrl: `${getBaseURL()}/api/product`,
     credentials: 'include',
   }),
-  tagTypes: ["Products"],
-  endpoints: (builder) => ({
+  tagTypes: ['Products'],
+  endpoints: builder => ({
     fetchAllProducts: builder.query({
-      query: ({category, color, minPrice, maxPrice, page=1, limit=10}) => {
+      query: ({
+        category,
+        color,
+        minPrice,
+        maxPrice,
+        page = 1,
+        limit = 10,
+      }) => {
         const queryParams = new URLSearchParams({
           category: category || '',
           color: color || '',
           minPrice: minPrice || 0,
           maxPrice: maxPrice || '',
           page: page.toString(),
-          limit: limit.toString()
-        })
-        return `/?${queryParams}`
+          limit: limit.toString(),
+        });
+        return `/?${queryParams}`;
       },
-      providesTags: ["Products"]
+      providesTags: ['Products'],
     }),
     fetchProductById: builder.query({
-      query: (id) => `/${id}`,
-      providesTags: (result, error, id) => [{type: "Products", id}]
+      query: id => `/${id}`,
+      providesTags: (result, error, id) => [{ type: 'Products', id }],
     }),
     AddProduct: builder.mutation({
-      query: (newProduct) => ({
-        url: "/create-product",
-        method: "POST",
+      query: newProduct => ({
+        url: '/create-product',
+        method: 'POST',
         body: newProduct,
       }),
-      invalidatesTags: ["Products"]
+      invalidatesTags: ['Products'],
     }),
     updateProduct: builder.mutation({
-      query: ({id, ...rest}) => ({
+      query: ({ id, ...rest }) => ({
         url: `/update-product/${id}`,
-        method: "PUT",
-        body: rest
+        method: 'PUT',
+        body: rest,
       }),
-      invalidatesTags: ["Products"]
+      invalidatesTags: ['Products'],
     }),
     deleteProduct: builder.mutation({
-      query: (id) => ({
+      query: id => ({
         url: `/${id}`,
-        method: "DELETE"
+        method: 'DELETE',
       }),
-      invalidatesTags: (result, error, id) => [{type: "Products", id}]
-    })
-  })
+      invalidatesTags: (result, error, id) => [{ type: 'Products', id }],
+    }),
+  }),
 });
 
-export const { useFetchAllProductsQuery, useFetchProductByIdQuery, useAddProductMutation, useUpdateProductMutation, useDeleteProductMutation } = productsApi;
+export const {
+  useFetchAllProductsQuery,
+  useFetchProductByIdQuery,
+  useAddProductMutation,
+  useUpdateProductMutation,
+  used,
+} = productsApi;
 export default productsApi;
