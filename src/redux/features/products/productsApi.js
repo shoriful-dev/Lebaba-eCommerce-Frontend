@@ -7,6 +7,7 @@ const productsApi = createApi({
     baseUrl: `${getBaseURL()}/api/product`,
     credentials: 'include',
   }),
+  
   endpoints: (builder) => ({
     fetchAllProducts: builder.query({
       query: ({category, color, minPrice, maxPrice, page=1, limit=10}) => {
@@ -20,6 +21,9 @@ const productsApi = createApi({
         })
         return `/?${queryParams}`
       }
+    }),
+    fetchProductById: builder.query({
+      
     })
   })
 });
