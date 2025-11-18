@@ -2,11 +2,11 @@ import { createBrowserRouter } from 'react-router-dom';
 import '../App.css'
 import App from '../App.jsx';
 import Home from '../pages/home/Home.jsx';
-import Shop from '../pages/shop/ShopPage.jsx';
 import CategoryPage from '../pages/category/CategoryPage.jsx';
 import ErrorPage from '../components/ErrorPage.jsx';
 import Login from '../components/Login.jsx';
 import Register from '../components/Register.jsx';
+import ShopPage from '../pages/shop/ShopPage.jsx';
 
 const router = createBrowserRouter([
   {
@@ -20,7 +20,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/shop',
-        element: <Shop/>
+        element: <ShopPage/>
       },
       {
         path: '/categories/:categoryName',
