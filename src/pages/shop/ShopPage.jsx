@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import ProductCards from './ProductCards';
 import { useFetchAllProductsQuery } from '../../redux/features/products/productsApi';
+import ShopFilltering from './ShopFilltering';
 
 const filters = {
   categories: ['all', 'accessories', 'dress', 'jewellery', 'cosmetics'],
@@ -25,7 +26,6 @@ const ShopPage = () => {
   const [productPerPage] = useState(8);
   const {
     data: productsData = {},
-    error,
     isLoading,
   } = useFetchAllProductsQuery({
     category: category !== 'all' ? category : '',
@@ -43,6 +43,13 @@ const ShopPage = () => {
     }
   };
 
+  const clearFillters = () => {
+    setFillterState({
+      category: 'all',
+      color: 'all',
+      priceRange: '',
+    });
+  };
   const startProduct = (currentPage - 1) * productPerPage + 1;
   const endProduct = startProduct + products.length - 1;
   return (
@@ -58,7 +65,12 @@ const ShopPage = () => {
       <section className="section__container">
         <div className="flex flex-col md:flex-row md:gap-12 gap-8">
           {/* categories */}
-          <div className="">categories</div>
+          <ShopFilltering
+            fillters={filters}
+            fillterState={fillterState}
+            setFillterState={setFillterState}
+            clearFillters={clearFillters}
+          />
 
           {/* products card */}
           <div className="">
@@ -68,35 +80,37 @@ const ShopPage = () => {
             <ProductCards products={products} />
 
             {/* pagination */}
-            <div className="mt-6 flex justify-center space-x-2">
-              <button
-                disabled={currentPage === 1}
-                onClick={() => handlePageChange(currentPage - 1)}
-                className="px-4 py-2 bg-gray-200 text-gray-700 rounded"
-              >
-                Previous
-              </button>
-              {[...Array(totalPages)].map((_, index) => (
+            {products.length > 0 && (
+              <div className="mt-6 flex justify-center space-x-2">
                 <button
-                  onClick={() => handlePageChange(index + 1)}
-                  className={`px-4 py-2 ${
-                    currentPage === index + 1
-                      ? 'bg-blue-500 text-white rounded'
-                      : 'bg-gray-200 text-gray-700 rounded'
-                  }`}
-                  key={index}
+                  disabled={currentPage === 1}
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  className="px-4 py-2 bg-gray-200 text-gray-700 rounded"
                 >
-                  {index + 1}
+                  Previous
                 </button>
-              ))}
-              <button
-                disabled={currentPage === totalPages}
-                onClick={() => handlePageChange(currentPage + 1)}
-                className="px-4 py-2 bg-gray-200 text-gray-700 rounded"
-              >
-                Next
-              </button>
-            </div>
+                {[...Array(totalPages)].map((_, index) => (
+                  <button
+                    onClick={() => handlePageChange(index + 1)}
+                    className={`px-4 py-2 ${
+                      currentPage === index + 1
+                        ? 'bg-blue-500 text-white rounded'
+                        : 'bg-gray-200 text-gray-700 rounded'
+                    }`}
+                    key={index}
+                  >
+                    {index + 1}
+                  </button>
+                ))}
+                <button
+                  disabled={currentPage === totalPages}
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  className="px-4 py-2 bg-gray-200 text-gray-700 rounded"
+                >
+                  Next
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </section>
