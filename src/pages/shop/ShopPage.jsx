@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import ProductCards from './ProductCards';
 import { useFetchAllProductsQuery } from '../../redux/features/products/productsApi';
 import ShopFilltering from './ShopFilltering';
+import Loading from '../../components/Loading';
 
 const filters = {
   categories: ['all', 'accessories', 'dress', 'jewellery', 'cosmetics'],
@@ -35,7 +36,7 @@ const ShopPage = () => {
     page: currentPage,
     limit: productPerPage,
   });
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <Loading/>;
   const { products, totalPages, totalProducts } = productsData?.data || {};
   const handlePageChange = pageNumber => {
     if (pageNumber > 0 && pageNumber <= totalPages) {
