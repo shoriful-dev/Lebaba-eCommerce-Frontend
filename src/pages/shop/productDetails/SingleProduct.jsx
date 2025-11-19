@@ -1,16 +1,23 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useFetchProductByIdQuery } from '../../../redux/features/products/productsApi';
 import Loading from '../../../components/Loading';
 import RatingStars from '../../../components/RatingStars';
 import ReviewCard from '../reviews/ReviewCard';
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../../../redux/features/cart/cartSlice';
 
 const SingleProduct = () => {
+  const dispatch = useDispatch();
   const {id} = useParams();
   const {data: {data: productDetails} = {}, isLoading, isError} = useFetchProductByIdQuery(id);
   if(isLoading) return <Loading/>
   if(isError) return <div className='flex items-center justify-center h-96'>Error to load product details</div>
-  const { product, reviews } = productDetails || {};2
+  const { product, reviews } = productDetails || {};
+  const handleAddToCart = product => {
+    dispatch(addToCart(product));
+  };
   return (
     <>
       {/* banner */}
@@ -65,7 +72,13 @@ const SingleProduct = () => {
             </div>
 
             {/* Add to Cart Button */}
-            <button className="mt-6 px-6 py-3 bg-primary text-white rounded-md">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleAddToCart(product);
+              }}
+              className="mt-6 px-6 py-3 bg-primary text-white rounded-md"
+            >
               Add to Cart
             </button>
           </div>
@@ -74,7 +87,7 @@ const SingleProduct = () => {
 
       {/* reviews */}
       <section className="section__container mt-8">
-        <ReviewCard productReviews={reviews}/>
+        <ReviewCard productReviews={reviews} />
       </section>
     </>
   );

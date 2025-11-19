@@ -32,6 +32,7 @@ const PostAReview = ({ handleClose, isModalOpen }) => {
     }
     try {
       const response = await postReview(newReview).unwrap();
+      console.log(response);
       alert('Review Posted successfully!');
       setRating(0);
       setComment('');

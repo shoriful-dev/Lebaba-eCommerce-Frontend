@@ -16,7 +16,8 @@
     "react-hook-form": "^7.66.0",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.9.5",
-    "remixicon": "^4.7.0"
+    "remixicon": "^4.7.0",
+    "sweetalert2": "^11.26.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",

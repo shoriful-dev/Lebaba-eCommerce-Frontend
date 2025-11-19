@@ -6,9 +6,17 @@ import { logout } from '../redux/features/auth/authSlice';
 import { useLogoutUserMutation } from '../redux/features/auth/authApi';
 
 const Navbar = () => {
+  const products = useSelector((state) => state.cart.products);
+  const [isCaetOpen, setIsCaetOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const {user} = useSelector((state) => state.auth);
+  // handle cart toggle
+  const handleCartToggle = () => {
+    setIsCaetOpen(!isCaetOpen)
+  }
+
+  // dropdown navigation
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
   const handleDropDownToggle = () => {
     setIsDropDownOpen(!isDropDownOpen);
@@ -90,10 +98,10 @@ const Navbar = () => {
             </Link>
           </span>
           <span>
-            <button className="hover:text-primary">
+            <button onClick={handleCartToggle} className="hover:text-primary">
               <i className="ri-shopping-bag-line"></i>
               <sup className="text-sm inline-block px-1.5 text-white rounded-full bg-primary text-center">
-                0
+                {products.length}
               </sup>
             </button>
           </span>
@@ -137,6 +145,11 @@ const Navbar = () => {
           </span>
         </div>
       </nav>
+
+      {/* cart modal */}
+      {
+        isCaetOpen && <div className="">Cart Items</div>
+      }
     </header>
   );
 };
