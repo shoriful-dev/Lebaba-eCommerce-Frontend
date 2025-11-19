@@ -4,6 +4,7 @@ import { Link, NavLink, useNavigate } from 'react-router-dom';
 import avatarImg from '../assets/avatar.png';
 import { logout } from '../redux/features/auth/authSlice';
 import { useLogoutUserMutation } from '../redux/features/auth/authApi';
+import CartModal from '../pages/shop/reviews/CartModal';
 
 const Navbar = () => {
   const products = useSelector((state) => state.cart.products);
@@ -148,7 +149,7 @@ const Navbar = () => {
 
       {/* cart modal */}
       {
-        isCaetOpen && <div className="">Cart Items</div>
+        isCaetOpen && <CartModal products={products} isOpen={isCaetOpen} onClose={handleCartToggle}/>
       }
     </header>
   );
