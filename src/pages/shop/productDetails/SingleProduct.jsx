@@ -3,13 +3,14 @@ import { Link, useParams } from 'react-router-dom';
 import { useFetchProductByIdQuery } from '../../../redux/features/products/productsApi';
 import Loading from '../../../components/Loading';
 import RatingStars from '../../../components/RatingStars';
+import ReviewCard from '../reviews/ReviewCard';
 
 const SingleProduct = () => {
   const {id} = useParams();
   const {data: {data: productDetails} = {}, isLoading, isError} = useFetchProductByIdQuery(id);
   if(isLoading) return <Loading/>
   if(isError) return <div className='flex items-center justify-center h-96'>Error to load product details</div>
-  const { product, reviews } = productDetails || {};
+  const { product, reviews } = productDetails || {};2
   return (
     <>
       {/* banner */}
@@ -59,7 +60,7 @@ const SingleProduct = () => {
               </p>
               <div className="flex gap-1 items-center">
                 <strong>Rating: </strong>
-                <RatingStars rating={product?.rating}/>
+                <RatingStars rating={product?.rating} />
               </div>
             </div>
 
@@ -69,6 +70,11 @@ const SingleProduct = () => {
             </button>
           </div>
         </div>
+      </section>
+
+      {/* reviews */}
+      <section className="section__container mt-8">
+        <ReviewCard productReviews={reviews}/>
       </section>
     </>
   );
