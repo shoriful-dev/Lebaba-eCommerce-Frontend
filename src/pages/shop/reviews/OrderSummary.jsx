@@ -4,12 +4,19 @@ import { clearCart } from '../../../redux/features/cart/cartSlice';
 
 const OrderSummary = () => {
   const dispatch = useDispatch();
-  const { products, selectedItems, totalPrice } = useSelector(
-    (state) => state.cart
-  );
+  const { products, selectedItems, totalPrice } = useSelector(state => state.cart);
+  const {user} = useSelector((state) => state.auth);
 
   const handleClearCart = () => {
-    dispatch(clearCart())
+    dispatch(clearCart());
+  };
+
+  const makePayment = async () => {
+    const body = {
+      products: products,
+      userId: user?._id
+    }
+    console.log(body)
   };
   return (
     <div className=" bg-primary-light mt-5 rounded text-base">
@@ -20,9 +27,9 @@ const OrderSummary = () => {
       </div>
       <div className="px-4 pb-6">
         <button
-          onClick={(e) => {
-            e.stopPropagation()
-            handleClearCart()
+          onClick={e => {
+            e.stopPropagation();
+            handleClearCart();
           }}
           className="bg-red-500 px-3 py-1.5 text-white  mt-2 rounded-md flex justify-between items-center mb-4"
         >
@@ -30,7 +37,12 @@ const OrderSummary = () => {
 
           <i className="ri-delete-bin-7-line"></i>
         </button>
-        <button className="bg-green-600 px-3 py-1.5 text-white  mt-2 rounded-md flex justify-between items-center">
+        <button
+          onClick={e => {
+            e.stopPropagation, makePayment();
+          }}
+          className="bg-green-600 px-3 py-1.5 text-white  mt-2 rounded-md flex justify-between items-center"
+        >
           <span className="mr-2">Proceed Checkout</span>
           <i className="ri-bank-card-line"></i>
         </button>
