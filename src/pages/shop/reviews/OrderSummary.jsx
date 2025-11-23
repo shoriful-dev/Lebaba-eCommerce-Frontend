@@ -1,23 +1,37 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearCart } from '../../../redux/features/cart/cartSlice';
+import { getBaseURL } from '../../../utils/getBaseURL';
+import axios from 'axios';
 
 const OrderSummary = () => {
   const dispatch = useDispatch();
-  const { products, selectedItems, totalPrice } = useSelector(state => state.cart);
-  const {user} = useSelector((state) => state.auth);
+  const { products, selectedItems, totalPrice } = useSelector(
+    state => state.cart
+  );
+  const { user } = useSelector(state => state.auth);
 
   const handleClearCart = () => {
     dispatch(clearCart());
   };
 
   const makePayment = async () => {
-    const body = {
-      products: products,
-      userId: user?._id
-    }
-    console.log(body)
-  };
+  try {
+    const response = await axios.post(
+      `${getBaseURL()}/api/orders/create-checkout-session`,
+      {
+        products,
+        userId: user?._id,
+      },
+      { headers: { "Content-Type": "application/json" } }
+    );
+
+    window.location.href = response.data.url;
+  } catch (error) {
+    console.error("Checkout creation error:", error);
+  }
+};
+
   return (
     <div className=" bg-primary-light mt-5 rounded text-base">
       <div className="px-6 py-4 space-y-5">
@@ -39,9 +53,10 @@ const OrderSummary = () => {
         </button>
         <button
           onClick={e => {
-            e.stopPropagation, makePayment();
+            e.stopPropagation();
+            makePayment();
           }}
-          className="bg-green-600 px-3 py-1.5 text-white  mt-2 rounded-md flex justify-between items-center"
+          className="bg-green-600 px-3 py-1.5 text-white mt-2 rounded-md flex justify-between items-center"
         >
           <span className="mr-2">Proceed Checkout</span>
           <i className="ri-bank-card-line"></i>
