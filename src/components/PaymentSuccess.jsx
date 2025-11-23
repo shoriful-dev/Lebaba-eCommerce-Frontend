@@ -28,7 +28,7 @@ const PaymentSuccess = () => {
       confimedPayment();
     }
   }, []);
-console.log(order)
+  console.log(order)
   return <div>PaymentSuccess</div>;
 };
 
